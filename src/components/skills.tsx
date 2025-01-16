@@ -16,44 +16,44 @@ interface Skill {
 const languages: Skill[] = [
   {
     title: "HTML/CSS",
-    image: "portfolio/src/images/html.png",
+    image: "/src/images/html.png",
     proficiency: 80,
   },
   {
     title: "JavaScript",
-    image: "portfolio/src/images/js.png",
+    image: "/src/images/js.png",
     proficiency: 60,
   },
-  { title: "C/C++", image: "portfolio/src/images/cpp.png", proficiency: 70 },
-  { title: "Dart", image: "portfolio/src/images/dart.png", proficiency: 80 },
+  { title: "C/C++", image: "/src/images/cpp.png", proficiency: 70 },
+  { title: "Dart", image: "/src/images/dart.png", proficiency: 80 },
   {
     title: "Python",
-    image: "portfolio/src/images/python.png",
+    image: "/src/images/python.png",
     proficiency: 80,
   },
-  { title: "SQL", image: "portfolio/src/images/sql.png", proficiency: 70 },
+  { title: "SQL", image: "/src/images/sql.png", proficiency: 70 },
 ];
 
 const frameworks: Skill[] = [
   {
     title: "Flutter",
-    image: "portfolio/src/images/flutter.png",
+    image: "/src/images/flutter.png",
     proficiency: 85,
   },
   {
     title: "Django",
-    image: "portfolio/src/images/django.png",
+    image: "/src/images/django.png",
     proficiency: 80,
   },
-  { title: "React", image: "portfolio/src/images/react.png", proficiency: 60 },
+  { title: "React", image: "/src/images/react.png", proficiency: 60 },
   {
     title: "Numpy/Pandas",
-    image: "portfolio/src/images/numpy.png",
+    image: "/src/images/numpy.png",
     proficiency: 75,
   },
   {
     title: "Git/Github",
-    image: "portfolio/src/images/git.png",
+    image: "/src/images/git.png",
     proficiency: 80,
   },
 ];

@@ -10,31 +10,31 @@ function Projects() {
       description:
         "Developed an invigilator management system using Django, with a responsive UI (HTML, CSS, Bootstrap), secure role-based login, and robust CRUD operations for managing invigilators and schedules.",
       tech: ["Django", "Bootstrap"],
-      image: "portfolio/src/images/exam.jpg",
-      link: "#",
+      image: "/src/images/exam.jpg",
+      link: "https://github.com/amritsharma01/IMS",
     },
     {
       title: "Facial Recognition Based Security System",
       description:
         "Developed a face recognition system using a Siamese network AI model, integrated with a Flutter app for user verification. Built a Django REST API for seamless app-server communication and implemented an ESP module to control a servo motor for door unlocking upon successful recognition.",
       tech: ["Python", "Django-REST", "Flutter", "C++"],
-      image: "portfolio/src/images/face.jpg",
-      link: "#",
+      image: "/src/images/face.jpg",
+      link: "https://github.com/amritsharma01/homesecurity",
     },
     {
       title: "JhattaSamachaar",
       description:
         "Developed a server-side news scraping solution with user-selected categories and machine learning-powered summaries. Built a Flutter app for viewing summarized news, setting preferences, and listening to audio news bulletins, featuring a user-friendly interface and seamless navigation.",
       tech: ["Django", "Django-REST", "Flutter"],
-      image: "portfolio/src/images/jhatta.jpg",
-      link: "#",
+      image: "/src/images/jhatta.jpg",
+      link: "https://github.com/amritsharma01/jhattasamachaar",
     },
     {
       title: "EasyHire",
       description:
         "Developed a recruitment platform with a mobile-first approach using Flutter, featuring secure authentication, robust Django REST APIs, and responsive design. Integrated advanced search and filtering to streamline hiring and enhance user engagement.",
       tech: ["Django", "Django-REST", "Flutter"],
-      image: "portfolio/src/images/job.jpg",
+      image: "/src/images/job.jpg",
       link: "#",
     },
     {
@@ -42,8 +42,8 @@ function Projects() {
       description:
         "Developed a solution to denoise and enhance seismic image resolution using advanced image processing techniques. Leveraged a U-Net model with subpixel and ResNet layers for improved accuracy and applied OpenCV for noise removal and upscaling, ensuring precise geological insights.",
       tech: ["Python", "Jupyter Notebook"],
-      image: "portfolio/src/images/seismic.png",
-      link: "#",
+      image: "/src/images/seismic.png",
+      link: "https://github.com/amritsharma01/seisres",
     },
   ];
 

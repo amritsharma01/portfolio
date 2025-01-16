@@ -53,7 +53,7 @@ function Hero() {
                 {/* Outer ring effect */}
                 <div className="relative w-40 h-48 md:w-80 md:h-96 rounded-full overflow-hidden ring-0 ring-primary/70 transition duration-300">
                   <img
-                    src="portfolio/src/images/amrit.png"
+                    src="/src/images/amrit.png"
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />
@@ -74,7 +74,7 @@ function Hero() {
 
                 {/* Download CV */}
                 <div className="order-4 flex justify-center py-5">
-                  <a download href={"src/components/assets/CV.pdf"}>
+                  <a download href={"/src/components/assets/CV.pdf"}>
                     <Button size="lg" className="font-semibold group">
                       {" "}
                       Download CV
