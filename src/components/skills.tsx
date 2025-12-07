@@ -1,167 +1,135 @@
 import React from "react";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  useAnimationFrame,
-} from "framer-motion";
-import { Code2, Braces } from "lucide-react";
+import { motion } from "framer-motion";
+import { Code2, Braces, Cloud, Server } from "lucide-react";
 
 interface Skill {
   title: string;
-  image: string;
-  proficiency: number;
+  image?: string;
+  category: "language" | "framework" | "tool" | "cloud";
 }
 
-const languages: Skill[] = [
-  {
-    title: "HTML/CSS",
-    image: "/src/images/html.png",
-    proficiency: 80,
-  },
-  {
-    title: "JavaScript",
-    image: "/src/images/js.png",
-    proficiency: 60,
-  },
-  { title: "C/C++", image: "/src/images/cpp.png", proficiency: 70 },
-  { title: "Dart", image: "/src/images/dart.png", proficiency: 80 },
-  {
-    title: "Python",
-    image: "/src/images/python.png",
-    proficiency: 80,
-  },
-  { title: "SQL", image: "/src/images/sql.png", proficiency: 70 },
+const skills: Skill[] = [
+  // Programming Languages
+  { title: "Go", image: "https://go.dev/images/go-logo-blue.svg", category: "language" },
+  { title: "Python", image: "/src/images/python.png", category: "language" },
+  { title: "Dart", image: "/src/images/dart.png", category: "language" },
+  { title: "C/C++", image: "/src/images/cpp.png", category: "language" },
+  { title: "PostgreSQL", image: "/src/images/sql.png", category: "language" },
+  
+  // Frameworks & Tools
+  { title: "Django", image: "/src/images/django.png", category: "framework" },
+  { title: "Echo", image: "/src/images/echo.png", category: "framework" },
+  { title: "Flutter", image: "/src/images/flutter.png", category: "framework" },
+  { title: "Numpy/Pandas", image: "/src/images/numpy.png", category: "framework" },
+  { title: "Git/Github", image: "/src/images/git.png", category: "tool" },
+  
+  // Cloud & Backend
+  { title: "AWS", image: "/src/images/aws.png", category: "cloud" },
+  { title: "Docker", image: "/src/images/docker.png", category: "tool" },
+  { title: "Linux", image: "/src/images/linux-logo.png", category: "tool" },
 ];
 
-const frameworks: Skill[] = [
-  {
-    title: "Flutter",
-    image: "/src/images/flutter.png",
-    proficiency: 85,
-  },
-  {
-    title: "Django",
-    image: "/src/images/django.png",
-    proficiency: 80,
-  },
-  { title: "React", image: "/src/images/react.png", proficiency: 60 },
-  {
-    title: "Numpy/Pandas",
-    image: "/src/images/numpy.png",
-    proficiency: 75,
-  },
-  {
-    title: "Git/Github",
-    image: "/src/images/git.png",
-    proficiency: 80,
-  },
-];
-
-const SkillsCarousel: React.FC<{ items: Skill[]; direction: number }> = ({
-  items,
-  direction,
-}) => {
-  const baseX = useMotionValue(0);
-  const speed = 30 * direction;
-  const itemWidth = 320;
-  const totalWidth = items.length * itemWidth;
-
-  useAnimationFrame((_, delta) => {
-    const moveBy = (delta / 1000) * speed;
-    let newBaseX = baseX.get() + moveBy;
-
-    if (newBaseX > 0) {
-      newBaseX = (newBaseX % totalWidth) - totalWidth;
-    } else if (newBaseX < -totalWidth) {
-      newBaseX = (newBaseX % totalWidth) + totalWidth;
-    }
-
-    baseX.set(newBaseX);
-  });
-
-  const x = useTransform(baseX, (v) => `${v}px`);
-
+const SkillCard: React.FC<{ skill: Skill; index: number }> = ({ skill, index }) => {
   return (
-    <div className="relative overflow-hidden w-full py-4">
-      <motion.div
-        className="flex gap-6"
-        style={{ x, width: `${totalWidth * 2}px` }}
-      >
-        {items.concat(items).map((item, index) => (
-          <div key={index} className="flex-shrink-0 w-80 group">
-            <div
-              className="relative p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10
-                          shadow-lg transition-all duration-300 hover:shadow-xl
-                          hover:border-primary/20 dark:hover:border-primary/30
-                          hover:bg-white/10"
-            >
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-8 h-8 object-contain opacity-80 group-hover:opacity-100 transition-opacity"
-                  />
-                </div>
-                <h3 className="text-lg font-medium text-foreground/90">
-                  {item.title}
-                </h3>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm text-muted-foreground mb-1">
-                  <span>Proficiency</span>
-                  <span>{item.proficiency}%</span>
-                </div>
-                <div className="h-2 w-full bg-primary/10 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${item.proficiency}%` }}
-                    transition={{ duration: 1, delay: index * 0.1 }}
-                    className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full"
-                  />
-                </div>
-              </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      className="group relative"
+    >
+      <div className="relative p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:scale-105">
+        <div className="flex items-center gap-3">
+          {skill.image ? (
+            <div className="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0">
+              <img
+                src={skill.image}
+                alt={skill.title}
+                className="w-7 h-7 object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
+              />
             </div>
-          </div>
-        ))}
-      </motion.div>
-    </div>
+          ) : (
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 dark:from-primary/30 dark:to-primary/20 flex items-center justify-center flex-shrink-0">
+              {skill.category === "cloud" && <Cloud className="w-5 h-5 text-primary" />}
+              {skill.category === "framework" && <Braces className="w-5 h-5 text-primary" />}
+              {skill.category === "tool" && <Server className="w-5 h-5 text-primary" />}
+              {skill.category === "language" && <Code2 className="w-5 h-5 text-primary" />}
+            </div>
+          )}
+          <span className="text-sm font-medium text-foreground/90 group-hover:text-primary transition-colors">
+            {skill.title}
+          </span>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
 const Skills: React.FC = () => {
+  const languages = skills.filter(s => s.category === "language");
+  const frameworks = skills.filter(s => s.category === "framework");
+  const tools = skills.filter(s => s.category === "tool" || s.category === "cloud");
+
   return (
-    <section className="pt-20 pb-10 bg-gray-200 dark:bg-gray-900" id="skills">
+    <section className="pt-20 pb-16 bg-gray-200 dark:bg-gray-900" id="skills">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+        <div className="text-center mb-12 space-y-3">
+          <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
             Skills & Expertise
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
             Technologies I've mastered along my journey
           </p>
         </div>
 
-        <div className="space-y-12">
+        <div className="max-w-6xl mx-auto space-y-12">
+          {/* Programming Languages */}
           <div>
             <div className="flex items-center justify-center gap-2 mb-6">
               <Code2 className="w-5 h-5 text-primary" />
-              <h3 className="text-2xl font-semibold text-foreground/90">
+              <h3 className="text-xl md:text-2xl font-semibold text-foreground/90">
                 Programming Languages
               </h3>
             </div>
-            <SkillsCarousel items={languages} direction={-1} />
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {languages.map((skill, index) => (
+                <SkillCard key={skill.title} skill={skill} index={index} />
+              ))}
+            </div>
           </div>
+
+          {/* Frameworks & Tools */}
           <div>
             <div className="flex items-center justify-center gap-2 mb-6">
               <Braces className="w-5 h-5 text-primary" />
-              <h3 className="text-2xl font-semibold text-foreground/90">
+              <h3 className="text-xl md:text-2xl font-semibold text-foreground/90">
                 Frameworks & Tools
               </h3>
             </div>
-            <SkillsCarousel items={frameworks} direction={1} />
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {frameworks.map((skill, index) => (
+                <SkillCard key={skill.title} skill={skill} index={index + languages.length} />
+              ))}
+            </div>
+          </div>
+
+          {/* Cloud & Infrastructure */}
+          <div>
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <Cloud className="w-5 h-5 text-primary" />
+              <h3 className="text-xl md:text-2xl font-semibold text-foreground/90">
+                Cloud & Infrastructure
+              </h3>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {tools.map((skill, index) => (
+                <SkillCard key={skill.title} skill={skill} index={index + languages.length + frameworks.length} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -54,7 +54,7 @@ function Hero() {
                 <div className="relative w-40 h-48 md:w-80 md:h-96 rounded-full overflow-hidden ring-0 ring-primary/70 transition duration-300">
                   <img
                     src="/src/images/amrit.png"
-                    alt="Profile"
+                    alt="Amrit Sharma - Backend Engineer & Developer"
                     className="w-full h-full object-cover"
                   />
                 </div>
