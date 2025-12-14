@@ -12,5 +12,11 @@
       <image:caption>Amrit Sharma, Backend Engineer and Software Developer from Nepal</image:caption>
     </image:image>
   </url>
+  <url>
+    <loc>https://sharmaamrit.com.np/about</loc>
+    <lastmod>2025-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 </urlset>
 
