@@ -1,5 +1,6 @@
 import { CodeIcon, HomeIcon, SunIcon, PersonIcon } from "@radix-ui/react-icons";
 import { BriefcaseIcon, MenuIcon, Moon, School } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { Button } from "./widgets/button";
 import { Sheet, SheetContent, SheetTrigger } from "./widgets/sheet";
 import { useTheme } from "./theme-provider";
@@ -8,9 +9,9 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 function Navbar() {
+  const location = useLocation();
   const navItems = [
     { label: "Home", icon: HomeIcon, href: "#home" },
-    { label: "About", icon: HomeIcon, href: "#about" },
     { label: "Skills", icon: CodeIcon, href: "#skills" },
     { label: "Projects", icon: BriefcaseIcon, href: "#projects" },
     { label: "Qualification", icon: School, href: "#qualification" },
@@ -21,6 +22,8 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
+    if (location.pathname !== "/") return;
+
     const handleScroll = () => {
       const sections = navItems.map((item) =>
         document.querySelector(item.href)
@@ -46,7 +49,7 @@ function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [activeTab, navItems]);
+  }, [activeTab, navItems, location.pathname]);
 
   // Function for smooth scrolling
   const scrollToSection = (href: string) => {

@@ -4,7 +4,9 @@ import {
   InstagramIcon,
   FacebookIcon,
   ExternalLinkIcon,
+  User,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "./widgets/button";
 import { GridPattern } from "./widgets/grid_pattern";
 import { cn } from "@/lib/utils";
@@ -72,8 +74,8 @@ function Hero() {
 
                 <AnimHero />
 
-                {/* Download CV */}
-                <div className="order-4 flex justify-center py-5">
+                {/* Download CV & About */}
+                <div className="order-4 flex justify-center gap-4 py-5 flex-wrap">
                   <a download href={"/CV.pdf"}>
                     <Button size="lg" className="font-semibold group">
                       {" "}
@@ -81,6 +83,12 @@ function Hero() {
                       <ExternalLinkIcon className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </a>
+                  <Link to="/about">
+                    <Button size="lg" variant="outline" className="font-semibold group">
+                      <User className="mr-2 w-4 h-4 group-hover:scale-110 transition-transform" />
+                      About Me
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

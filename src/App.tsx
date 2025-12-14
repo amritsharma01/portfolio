@@ -1,22 +1,25 @@
-import { Hero } from "./components/herosection";
-import { Skills } from "./components/skills";
-import { Projects } from "./components/projects";
-import { Footer } from "./components/footer";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { AboutPage } from "./pages/AboutPage";
 import { Navbar } from "./components/navbar";
-import Qualification from "./components/qualification";
-import About from "./components/about";
+import { Footer } from "./components/footer";
 
 function App() {
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary/20">
-      <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Qualification />
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-background text-foreground selection:bg-primary/20">
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Navbar />
+              <Home />
+              <Footer />
+            </>
+          } />
+          <Route path="/about" element={<AboutPage />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
