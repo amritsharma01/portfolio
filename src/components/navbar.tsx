@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 function Navbar() {
   const navItems = [
     { label: "Home", icon: HomeIcon, href: "#home" },
+    { label: "About", icon: HomeIcon, href: "#about" },
     { label: "Skills", icon: CodeIcon, href: "#skills" },
     { label: "Projects", icon: BriefcaseIcon, href: "#projects" },
     { label: "Qualification", icon: School, href: "#qualification" },

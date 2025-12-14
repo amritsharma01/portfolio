@@ -1,0 +1,129 @@
+func (p *ProductItem) UpdateAmount() {
+	p.UpdateAmountWithVat(nil)
+}
+
+func (p *ProductItem) UpdateAmountWithVat(vat *types.Vat) {
+	totalAmount := p.GetTotalAmount()
+	p.TotalAmount = lib.Amount(totalAmount)
+
+	discount := p.GetDiscountAmount()
+	subTotalAmount := totalAmount.Sub(discount)
+	p.ItemDiscountAmount = lib.Amount(discount)
+	p.ItemDiscountAmountFloat = lib.ToFloat(p.ItemDiscountAmount)
+
+	p.SubTotalIntAmount = lib.Amount(subTotalAmount)
+	p.SubTotalAmount = lib.ToFloat(p.SubTotalIntAmount)
+
+	afterDiscountAmount := lib.Round(subTotalAmount.Sub(decimal.NewFromInt(p.TransactionDiscountAmount).Div(types.AmountMultiplier)))
+
+	// Check if VAT is inclusive
+	if vat != nil && *vat == types.InclusiveVat {
+		// For inclusive VAT, the rate already has VAT and service charge
+		// Need to extract them from afterDiscountAmount
+
+		if p.ServiceChargeApplicable && p.VatType.IsVatThirteenType() {
+			// Both service charge (10%) and VAT (13%) are included
+			// Total multiplier = 1.10 × 1.13 = 1.243
+			baseAmount := lib.Round(afterDiscountAmount.Div(decimal.NewFromFloat(1.243)))
+
+			serviceCharge := lib.Round(baseAmount.Mul(decimal.NewFromFloat(0.10)))
+			amountWithSC := baseAmount.Add(serviceCharge)
+
+			vatAmount := lib.Round(amountWithSC.Mul(decimal.NewFromFloat(0.13)))
+
+			p.ServiceChargeIntAmount = lib.Amount(serviceCharge)
+			p.ServiceChargeAmount = lib.ToFloat(p.ServiceChargeIntAmount)
+
+			p.TaxableIntAmount = lib.Amount(amountWithSC)
+			p.TaxableAmount = lib.ToFloat(p.TaxableIntAmount)
+
+			p.VatIntAmount = lib.Amount(vatAmount)
+			p.VatAmount = lib.ToFloat(p.VatIntAmount)
+
+		} else if p.VatType.IsVatThirteenType() {
+			// Only VAT (13%) is included
+			baseAmount := lib.Round(afterDiscountAmount.Div(decimal.NewFromFloat(1.13)))
+			vatAmount := lib.Round(afterDiscountAmount.Sub(baseAmount))
+
+			p.TaxableIntAmount = lib.Amount(baseAmount)
+			p.TaxableAmount = lib.ToFloat(p.TaxableIntAmount)
+
+			p.VatIntAmount = lib.Amount(vatAmount)
+			p.VatAmount = lib.ToFloat(p.VatIntAmount)
+
+			p.ServiceChargeIntAmount = 0
+			p.ServiceChargeAmount = 0
+
+		} else if p.ServiceChargeApplicable {
+			// Only service charge (10%) is included
+			baseAmount := lib.Round(afterDiscountAmount.Div(decimal.NewFromFloat(1.10)))
+			serviceCharge := lib.Round(afterDiscountAmount.Sub(baseAmount))
+
+			p.ServiceChargeIntAmount = lib.Amount(serviceCharge)
+			p.ServiceChargeAmount = lib.ToFloat(p.ServiceChargeIntAmount)
+
+			if p.VatType.IsZeroVatType() {
+				p.NonTaxableIntAmount = lib.Amount(baseAmount)
+				p.ZeroVatAmount = p.NonTaxableIntAmount
+				p.NonTaxableAmount = lib.ToFloat(p.NonTaxableIntAmount)
+			} else if p.VatType.IsNoVatType() {
+				p.NonTaxableIntAmount = lib.Amount(baseAmount)
+				p.NoVatAmount = p.NonTaxableIntAmount
+				p.NonTaxableAmount = lib.ToFloat(p.NonTaxableIntAmount)
+			}
+		} else {
+			// No service charge or VAT, treat as non-taxable
+			if p.VatType.IsZeroVatType() {
+				p.NonTaxableIntAmount = lib.Amount(afterDiscountAmount)
+				p.ZeroVatAmount = p.NonTaxableIntAmount
+				p.NonTaxableAmount = lib.ToFloat(p.NonTaxableIntAmount)
+			} else if p.VatType.IsNoVatType() {
+				p.NonTaxableIntAmount = lib.Amount(afterDiscountAmount)
+				p.NoVatAmount = p.NonTaxableIntAmount
+				p.NonTaxableAmount = lib.ToFloat(p.NonTaxableIntAmount)
+			}
+			p.ServiceChargeIntAmount = 0
+			p.ServiceChargeAmount = 0
+		}
+
+		p.GrandTotalIntAmount = p.TaxableIntAmount + p.NonTaxableIntAmount + p.VatIntAmount
+		p.GrandTotalAmount = lib.ToFloat(p.GrandTotalIntAmount)
+
+	} else {
+		// Existing exclusive VAT logic (current code)
+		serviceCharge := decimal.NewFromInt32(0)
+
+		if p.ServiceChargeApplicable {
+			serviceCharge = afterDiscountAmount.Mul(decimal.NewFromFloat(p.ServiceCharge)).Div(decimal.NewFromInt(100))
+		}
+
+		serviceCharge = lib.Round(serviceCharge)
+
+		p.ServiceChargeIntAmount = lib.Amount(serviceCharge)
+		p.ServiceChargeAmount = lib.ToFloat(p.ServiceChargeIntAmount)
+
+		withServiceChargeAmount := afterDiscountAmount.Add(serviceCharge)
+
+		if p.VatType.IsVatThirteenType() {
+			p.TaxableIntAmount = lib.Amount(withServiceChargeAmount)
+			p.TaxableAmount = lib.ToFloat(p.TaxableIntAmount)
+
+			vatAmount := lib.Round(withServiceChargeAmount.
+				Mul(decimal.NewFromInt32(13)).
+				Div(decimal.NewFromInt32(100)))
+
+			p.VatIntAmount = lib.Amount(vatAmount)
+			p.VatAmount = lib.ToFloat(p.VatIntAmount)
+		} else if p.VatType.IsZeroVatType() {
+			p.NonTaxableIntAmount = lib.Amount(withServiceChargeAmount)
+			p.ZeroVatAmount = p.NonTaxableIntAmount
+			p.NonTaxableAmount = lib.ToFloat(p.NonTaxableIntAmount)
+		} else if p.VatType.IsNoVatType() {
+			p.NonTaxableIntAmount = lib.Amount(withServiceChargeAmount)
+			p.NoVatAmount = p.NonTaxableIntAmount
+			p.NonTaxableAmount = lib.ToFloat(p.NonTaxableIntAmount)
+		}
+		p.GrandTotalIntAmount = p.TaxableIntAmount + p.NonTaxableIntAmount + p.VatIntAmount
+		p.GrandTotalAmount = lib.ToFloat(p.GrandTotalIntAmount)
+	}
+}

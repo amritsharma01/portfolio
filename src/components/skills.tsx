@@ -11,22 +11,22 @@ interface Skill {
 const skills: Skill[] = [
   // Programming Languages
   { title: "Go", image: "https://go.dev/images/go-logo-blue.svg", category: "language" },
-  { title: "Python", image: "/src/images/python.png", category: "language" },
-  { title: "Dart", image: "/src/images/dart.png", category: "language" },
-  { title: "C/C++", image: "/src/images/cpp.png", category: "language" },
-  { title: "PostgreSQL", image: "/src/images/sql.png", category: "language" },
+  { title: "Python", image: "/images/python.png", category: "language" },
+  { title: "Dart", image: "/images/dart.png", category: "language" },
+  { title: "C/C++", image: "/images/cpp.png", category: "language" },
+  { title: "PostgreSQL", image: "/images/sql.png", category: "language" },
   
   // Frameworks & Tools
-  { title: "Django", image: "/src/images/django.png", category: "framework" },
-  { title: "Echo", image: "/src/images/echo.png", category: "framework" },
-  { title: "Flutter", image: "/src/images/flutter.png", category: "framework" },
-  { title: "Numpy/Pandas", image: "/src/images/numpy.png", category: "framework" },
-  { title: "Git/Github", image: "/src/images/git.png", category: "tool" },
+  { title: "Django", image: "/images/django.png", category: "framework" },
+  { title: "Echo", image: "/images/echo.png", category: "framework" },
+  { title: "Flutter", image: "/images/flutter.png", category: "framework" },
+  { title: "Numpy/Pandas", image: "/images/numpy.png", category: "framework" },
+  { title: "Git/Github", image: "/images/git.png", category: "tool" },
   
   // Cloud & Backend
-  { title: "AWS", image: "/src/images/aws.png", category: "cloud" },
-  { title: "Docker", image: "/src/images/docker.png", category: "tool" },
-  { title: "Linux", image: "/src/images/linux-logo.png", category: "tool" },
+  { title: "AWS", image: "/images/aws.png", category: "cloud" },
+  { title: "Docker", image: "/images/docker.png", category: "tool" },
+  { title: "Linux", image: "/images/linux-logo.png", category: "tool" },
 ];
 
 const SkillCard: React.FC<{ skill: Skill; index: number }> = ({ skill, index }) => {
